@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - School Gallery</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-graduation-cap"></i>
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-chart-dashboard"></i>
+                    Dashboard
+                </a>
+                <a href="#upload" class="nav-item" onclick="showSection('upload')">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Upload Media
+                </a>
+                <a href="#manage" class="nav-item" onclick="showSection('manage')">
+                    <i class="fas fa-folder-tree"></i>
+                    Manage Folders
+                </a>
+                <a href="#users" class="nav-item" onclick="showSection('users')">
+                    <i class="fas fa-users"></i>
+                    User Approvals
+                </a>
+                <a href="#gallery" class="nav-item" onclick="showSection('gallery')">
+                    <i class="fas fa-images"></i>
+                    Media Gallery
+                </a>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    Back to Site
+                </a>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <div class="admin-user">
+                    <span>Welcome, Admin</span>
+                    <button class="btn btn-outline" onclick="logout()">Logout</button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="admin-section active">
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-images"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>1,247</h3>
+                                <p>Total Photos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>89</h3>
+                                <p>Total Videos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>24</h3>
+                                <p>Occasions</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>156</h3>
+                                <p>Active Users</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <i class="fas fa-upload text-success"></i>
+                                <div class="activity-content">
+                                    <p><strong>New media uploaded</strong> - Sports Day 2024</p>
+                                    <small>2 hours ago</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <i class="fas fa-user-plus text-primary"></i>
+                                <div class="activity-content">
+                                    <p><strong>New user registered</strong> - John Doe</p>
+                                    <small>4 hours ago</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <i class="fas fa-folder-plus text-warning"></i>
+                                <div class="activity-content">
+                                    <p><strong>New folder created</strong> - Annual Function 2024</p>
+                                    <small>1 day ago</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Upload Section -->
+                <section id="upload" class="admin-section">
+                    <div class="upload-container">
+                        <div class="folder-selection">
+                            <h3>Select Upload Location</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="uploadOccasion">Occasion</label>
+                                    <select id="uploadOccasion" onchange="loadYears()">
+                                        <option value="">Select Occasion</option>
+                                        <option value="sports-day">Sports Day</option>
+                                        <option value="annual-function">Annual Function</option>
+                                        <option value="science-fair">Science Fair</option>
+                                        <option value="graduation">Graduation</option>
+                                        <option value="cultural-fest">Cultural Festival</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-primary" onclick="showCreateOccasionModal()">
+                                        <i class="fas fa-plus"></i> New
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="uploadYear">Year</label>
+                                    <select id="uploadYear" onchange="loadSubfolders()" disabled>
+                                        <option value="">Select Year</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-primary" onclick="showCreateYearModal()" disabled id="newYearBtn">
+                                        <i class="fas fa-plus"></i> New
+                                    </button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="uploadSubfolder">Category (Optional)</label>
+                                    <select id="uploadSubfolder" disabled>
+                                        <option value="">Select Category</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-primary" onclick="showCreateSubfolderModal()" disabled id="newSubfolderBtn">
+                                        <i class="fas fa-plus"></i> New
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h4>Drag & Drop Files Here</h4>
+                                <p>or click to browse</p>
+                                <input type="file" id="fileInput" multiple accept="image/*,video/*" onchange="handleFileSelect(event)">
+                            </div>
+                            <div class="upload-preview" id="uploadPreview"></div>
+                        </div>
+
+                        <button class="btn btn-primary upload-btn" onclick="uploadFiles()" disabled id="uploadBtn">
+                            <i class="fas fa-upload"></i>
+                            Upload Files
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Manage Folders Section -->
+                <section id="manage" class="admin-section">
+                    <div class="folder-management">
+                        <h3>Folder Structure</h3>
+                        <div class="folder-tree" id="folderTree">
+                            <!-- Folder structure will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- User Approvals Section -->
+                <section id="users" class="admin-section">
+                    <div class="user-management">
+                        <h3>Pending User Approvals</h3>
+                        <div class="user-list" id="pendingUsers">
+                            <!-- Pending users will be populated here -->
+                        </div>
+
+                        <h3>Active Users</h3>
+                        <div class="user-list" id="activeUsers">
+                            <!-- Active users will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Gallery Management Section -->
+                <section id="gallery" class="admin-section">
+                    <div class="gallery-management">
+                        <h3>Media Gallery</h3>
+                        <div class="gallery-grid" id="adminGalleryGrid">
+                            <!-- Gallery items will be populated here -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Create Occasion Modal -->
+    <div id="createOccasionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createOccasionModal')">&times;</span>
+            <h3>Create New Occasion</h3>
+            <form id="createOccasionForm" onsubmit="createOccasion(event)">
+                <div class="form-group">
+                    <label for="occasionName">Occasion Name</label>
+                    <input type="text" id="occasionName" required>
+                </div>
+                <div class="form-group">
+                    <label for="occasionDescription">Description</label>
+                    <textarea id="occasionDescription" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Occasion</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Year Modal -->
+    <div id="createYearModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createYearModal')">&times;</span>
+            <h3>Create New Year</h3>
+            <form id="createYearForm" onsubmit="createYear(event)">
+                <div class="form-group">
+                    <label for="yearName">Year</label>
+                    <input type="text" id="yearName" required placeholder="e.g., 2024">
+                </div>
+                <button type="submit" class="btn btn-primary">Create Year</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Subfolder Modal -->
+    <div id="createSubfolderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createSubfolderModal')">&times;</span>
+            <h3>Create New Category</h3>
+            <form id="createSubfolderForm" onsubmit="createSubfolder(event)">
+                <div class="form-group">
+                    <label for="subfolderName">Category Name</label>
+                    <input type="text" id="subfolderName" required placeholder="e.g., Group Photos, Performances">
+                </div>
+                <button type="submit" class="btn btn-primary">Create Category</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Gallery - Memories & Moments</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/gallery.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>School Gallery</h1>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#occasions" class="nav-link">Occasions</a>
+                <a href="#about" class="nav-link">About</a>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" onclick="showSignupModal()">Sign Up</button>
+                    <button class="btn btn-primary" onclick="showLoginModal()">Login</button>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Capturing School Memories</h2>
+                <p>Explore our collection of precious moments from various school events and occasions</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="totalPhotos">1,247</span>
+                        <span class="stat-label">Photos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="totalVideos">89</span>
+                        <span class="stat-label">Videos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="totalOccasions">24</span>
+                        <span class="stat-label">Occasions</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="filters">
+            <div class="container">
+                <h3>Browse by Occasion</h3>
+                <div class="filter-controls">
+                    <select id="occasionSelect" onchange="filterByOccasion()">
+                        <option value="">All Occasions</option>
+                        <option value="sports-day">Sports Day</option>
+                        <option value="annual-function">Annual Function</option>
+                        <option value="science-fair">Science Fair</option>
+                        <option value="graduation">Graduation</option>
+                        <option value="cultural-fest">Cultural Festival</option>
+                    </select>
+                    <select id="yearSelect" onchange="filterByYear()" disabled>
+                        <option value="">Select Year</option>
+                    </select>
+                    <select id="subfolderSelect" onchange="filterBySubfolder()" disabled>
+                        <option value="">Select Category</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="clearFilters()">Clear Filters</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery">
+            <div class="container">
+                <h3>Recent Uploads</h3>
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Gallery items will be populated by JavaScript -->
+                </div>
+                <button class="btn btn-outline load-more" onclick="loadMoreMedia()">Load More</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h3>Login</h3>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h3>Sign Up</h3>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="studentClass">Class/Grade</label>
+                    <input type="text" id="studentClass" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <p class="signup-note">Your account will be reviewed by admin before approval.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Media View Modal -->
+    <div id="mediaModal" class="modal media-modal">
+        <div class="modal-content media-content">
+            <span class="close" onclick="closeModal('mediaModal')">&times;</span>
+            <div class="media-container">
+                <div class="media-display" id="mediaDisplay">
+                    <!-- Media will be inserted here -->
+                </div>
+                <div class="media-info">
+                    <h4 id="mediaTitle"></h4>
+                    <p id="mediaDetails"></p>
+                    <div class="media-actions">
+                        <button class="btn btn-icon" onclick="likeMedia()" id="likeBtn">
+                            <i class="far fa-heart"></i>
+                            <span id="likeCount">0</span>
+                        </button>
+                        <button class="btn btn-icon" onclick="shareMedia()">
+                            <i class="fas fa-share"></i>
+                        </button>
+                        <button class="btn btn-icon" onclick="downloadMedia()">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                    <div class="comments-section">
+                        <h5>Comments</h5>
+                        <div class="comments-list" id="commentsList">
+                            <!-- Comments will be populated here -->
+                        </div>
+                        <div class="comment-form">
+                            <input type="text" id="commentInput" placeholder="Add a comment..." onkeypress="handleCommentKeypress(event)">
+                            <button class="btn btn-primary" onclick="addComment()">Post</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/gallery.js"></script>
+    <script src="scripts/auth.js"></script>
+</body>
+</html>
